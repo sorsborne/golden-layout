@@ -22,7 +22,7 @@
 lm.items.AbstractContentItem = function( layoutManager, config, parent ) {
 	lm.utils.EventEmitter.call( this );
 
-	this.config = this._extendItemNode( config );
+	this.config = $.extend(true, {}, this._extendItemNode( config ));
 	this.type = config.type;
 	this.contentItems = [];
 	this.parent = parent;
@@ -42,7 +42,7 @@ lm.items.AbstractContentItem = function( layoutManager, config, parent ) {
 	this.on( lm.utils.EventEmitter.ALL_EVENT, this._propagateEvent, this );
 	
 	if( config.content ) {
-		this._createContentItems( config );
+		this._createContentItems( this.config );
 	}
 };
 

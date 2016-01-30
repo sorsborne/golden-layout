@@ -7,8 +7,10 @@ lm.container.ItemContainer = function( config, parent, layoutManager ) {
 	this.parent = parent;
 	this.layoutManager = layoutManager;
 	this.isHidden = false;
+	// Maintain state for each instance of component
+	this._stateItem = new lm.container.ItemState( config.componentState );
+	config.componentState = this._stateItem.getState();
 	
-	this._config = config;
 	this._element = $([
 		'<div class="lm_item_container">',
 			'<div class="lm_content"></div>',
@@ -132,7 +134,7 @@ lm.utils.copy( lm.container.ItemContainer.prototype, {
 	 * @returns {Object} state
 	 */
 	getState: function() {
-		return this._config.componentState;
+		return this.parent.config.componentState;
 	},
 
 	/**
@@ -152,7 +154,8 @@ lm.utils.copy( lm.container.ItemContainer.prototype, {
 	 * @param {serialisable} state
 	 */
 	setState: function( state ) {
-		this._config.componentState = state;
+		this.parent.config.componentState = state;
+		this._stateItem.setState(state);  
 		this.parent.emitBubblingEvent( 'stateChanged' );
 	},
 

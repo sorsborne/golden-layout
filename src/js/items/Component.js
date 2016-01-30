@@ -5,10 +5,10 @@
  */
 lm.items.Component = function( layoutManager, config, parent ) {
 	lm.items.AbstractContentItem.call( this, layoutManager, config, parent );
-	
+
 	var ComponentConstructor = layoutManager.getComponent( this.config.componentName ),
-		componentConfig = $.extend( true, {}, this.config.componentState || {} );
-		
+		componentConfig = config.componentState;
+
 	componentConfig.componentName = this.config.componentName;
 	this.componentName = this.config.componentName;
 
@@ -17,9 +17,10 @@ lm.items.Component = function( layoutManager, config, parent ) {
 	}
 
 	this.isComponent = true;
-	this.container = new lm.container.ItemContainer( this.config, this, layoutManager );
+	this.container = new lm.container.ItemContainer( config, this, layoutManager );
 	this.instance = new ComponentConstructor( this.container, componentConfig  );
 	this.element = this.container._element;
+	this.componentState = componentConfig;
 };
 
 lm.utils.extend( lm.items.Component, lm.items.AbstractContentItem );
